@@ -13,11 +13,11 @@ import cn from "clsx";
 const Home = ({ users }: { users: User[] }): ReactElement => {
   const { activeUser, setActiveUser } = useActiveUserContext();
   const { data: conversations, isLoading } = useConversationsBySender(
-    activeUser.id ?? getLoggedUserId()
+    activeUser.id ?? getLoggedUserId(),
   );
   const { data: allUsers } = useUsers({ initialData: users });
   const [activeConversation, setActiveConversation] = useState<number | null>(
-    null
+    null,
   );
   const [contactName, setContactName] = useState<string | null>(null);
   const [hiddenConversations, setHiddenConversations] = useState(false);
@@ -56,7 +56,7 @@ const Home = ({ users }: { users: User[] }): ReactElement => {
         <div
           className={cn(
             "col-span-3 lg:col-span-4 rounded-lg h-full rounded-lg",
-            hiddenConversations ? "block animate-slideLeft" : "hidden"
+            hiddenConversations ? "block animate-slideLeft" : "hidden",
           )}
         >
           {activeConversation && !!contactName && (

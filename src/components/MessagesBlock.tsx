@@ -3,6 +3,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useMessagesById } from "src/api/hooks/useMessage";
 import { useActiveUserContext } from "./Layout";
 import cn from "clsx";
+import { useMutation, useQueryClient } from "react-query";
+import { MessageAPI } from "src/api/api";
 
 export default function MessageBlock({
   conversationId,
@@ -14,7 +16,10 @@ export default function MessageBlock({
   isHidden: boolean;
   onClick: () => void;
 }) {
-  const { data } = useMessagesById(conversationId);
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useMessagesById(conversationId);
+  console.log(data);
+
   const { activeUser } = useActiveUserContext();
   const {
     register,
@@ -23,22 +28,28 @@ export default function MessageBlock({
     reset,
   } = useForm();
 
-  const [newMessages, setNewMessages] = useState<FieldValues[]>([]);
+  const addMessage = useMutation(MessageAPI.createMessage, {
+    onSuccess: (message) => {
+      queryClient.setQueryData<unknown[]>(
+        ["message", conversationId],
+        (oldMessages) => (!!oldMessages ? [...oldMessages, message] : []),
+      );
+    },
+  });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const message = {
-      conversationId: conversationId,
-      timestamp: Date.now(),
-      authorId: activeUser.id,
-      body: data.message,
-    };
-    newMessages.push(message);
-    reset();
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const id = conversationId;
+    if (activeUser.id) {
+      const message = {
+        timestamp: Date.now(),
+        body: data.message as string,
+        authorId: activeUser.id,
+        conversationId: conversationId,
+      };
+      await addMessage.mutate({ id, message });
+      reset();
+    }
   };
-
-  useEffect(() => {
-    setNewMessages([]);
-  }, [conversationId, activeUser]);
 
   return (
     <div className="relative h-full md:shadow-lg md:p-5 md:rouned-lg overflow-hidden">
@@ -71,68 +82,39 @@ export default function MessageBlock({
           <p className="my-auto">{contactName}</p>
         </div>
         <div className="grid grid-cols-1 gap-3 content-end h-full">
-          {data?.map((message) => (
-            <div
-              key={`conversation-${conversationId}-message-${message.id}`}
-              className={cn(
-                activeUser.id === message.authorId
-                  ? "grid justify-items-end"
-                  : "grid justify-items-start"
-              )}
-            >
-              <p
+          {!isLoading &&
+            data &&
+            data.map((message) => (
+              <div
+                key={`conversation-${conversationId}-message-${message.id}`}
                 className={cn(
-                  "chat-bubble text-sm w-3/5",
                   activeUser.id === message.authorId
-                    ? "chat-bubble-accent"
-                    : "chat-bubble-secondary"
+                    ? "grid justify-items-end"
+                    : "grid justify-items-start",
                 )}
               >
-                {message.body}
-              </p>
-              <p className="text-[10px] float-right">
-                {new Intl.DateTimeFormat("en-US", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                }).format(message.timestamp)}
-              </p>
-            </div>
-          ))}
-          {newMessages?.map((message, index) => (
-            <div
-              key={`conversation-${conversationId}-new-message-${index}`}
-              className={cn(
-                activeUser.id === message.authorId
-                  ? "grid justify-items-end"
-                  : "grid justify-items-start"
-              )}
-            >
-              <p
-                className={cn(
-                  "chat-bubble text-sm w-fit",
-                  activeUser.id === message.authorId
-                    ? "chat-bubble-accent"
-                    : "chat-bubble-secondary"
-                )}
-              >
-                {message.body}
-              </p>
-              <p className="text-[10px] float-right">
-                {new Intl.DateTimeFormat("en-US", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                }).format(message.timestamp)}
-              </p>
-            </div>
-          ))}
+                <p
+                  className={cn(
+                    "chat-bubble text-sm w-3/5",
+                    activeUser.id === message.authorId
+                      ? "chat-bubble-accent"
+                      : "chat-bubble-secondary",
+                  )}
+                >
+                  {message.body}
+                </p>
+                <p className="text-[10px] float-right">
+                  {new Intl.DateTimeFormat("en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "numeric",
+                    minute: "numeric",
+                    second: "numeric",
+                  }).format(message.timestamp)}
+                </p>
+              </div>
+            ))}
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="w-full flex space-x-3"

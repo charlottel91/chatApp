@@ -10,6 +10,6 @@ export function useConversationsBySender(id: number) {
       keepPreviousData: false,
       refetchOnWindowFocus: false,
       notifyOnChangeProps: "tracked",
-    }
+    },
   );
 }

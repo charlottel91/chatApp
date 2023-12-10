@@ -30,15 +30,24 @@ const ConversationList = ({
     <div
       className={cn(
         "col-span-2 h-full rounded-md flex flex-col p-3 space-y-4",
-        isHidden ? "hidden md:block" : "animate-slideRight"
+        isHidden ? "hidden md:block" : "animate-slideRight",
       )}
     >
       <div className="flex justify-between">
         <details className="dropdown">
-          <summary className="m-1 btn btn-primary">{activeUser.nickname}</summary>
+          <summary className="m-1 btn btn-primary">
+            {activeUser.nickname}
+          </summary>
           <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
             {allUsers.map((user) => (
-              <li key={`select-user-${user.id}`} onClick={() => onChange(user.id)} className={cn("hover:bg-primary/25", activeUser.id === user.id && "bg-primary")}>
+              <li
+                key={`select-user-${user.id}`}
+                onClick={() => onChange(user.id)}
+                className={cn(
+                  "hover:bg-primary/25",
+                  activeUser.id === user.id && "bg-primary",
+                )}
+              >
                 <a>{user.nickname}</a>
               </li>
             ))}
@@ -78,7 +87,7 @@ const ConversationList = ({
               conversation.id,
               activeUser.nickname === conversation.recipientNickname
                 ? conversation.senderNickname
-                : conversation.recipientNickname
+                : conversation.recipientNickname,
             )
           }
         >

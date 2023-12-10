@@ -25,4 +25,4 @@ Our goal is to support everybody in the country, including people with disabilit
 not everywhere
 
 We all love to relax after a hard day’s work. It would be a shame if we didn’t feel confident enough about the upcoming automatic deployment. Are you sure everything has been tested thoroughly ?
-No because I don't write test. But I should have run end-to-end tests to check that my application is usable by a user and unit tests on the critical parts of my code, in particular the sending of new messages. 
+No because I don't write test. But I should have run end-to-end tests to check that my application is usable by a user and unit tests on the critical parts of my code, in particular the sending of new messages.

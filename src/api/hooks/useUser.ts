@@ -15,7 +15,7 @@ export async function prefetchUsers(queryClient: QueryClient) {
   return queryClient.fetchQuery(
     ["users"],
     () => UserAPI.getUsers(),
-    { staleTime: 28800000 } // 8 hours
+    { staleTime: 28800000 }, // 8 hours
   );
 }
 
