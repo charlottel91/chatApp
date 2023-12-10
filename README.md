@@ -1,71 +1,28 @@
-# Context :
+## Documentation
 
-At leboncoin, our users can share messages about a transaction, or ask for informations about any products.
+State management => react-query because it's easy to set up. It lets you manage data with a caching system. For large applications with large volumes of data, I would suggest the use of Redux.
+Forms => react-hooks-form because it's powerful, it simplifies form management and the documentation is well done and regularly updated.
+Style => tailwind + DaisyUI because I use tailwind in my actual job so it's easy for me and I want to test DaisyUI which offers components and color themes.
 
-Your job is to create the interface to consult those messages.
-The interface needs to work on both desktop & mobile devices.
+To start the server on port 3005 run `yarn start-server` or `npm start-server`
+To start the front on port 3000 run `yarn dev` or `npm dev`
+Before push: `yarn prettier` or `npm prettier`
 
-In addition to your code, a README explaining your thought process and your choices would be appreciated.
+Time spent: 2 days because I won't know DaisyUI and test several things with it
 
-# Exercise :
+As we want to reach our users anywhere, we need to make sure the app is performing well. What can you do to make it really fast ?
 
-- Display a list of all the conversations
-- Allow the user to select a conversation
-  - Inside the conversation, there is a list of all the messages between these two users.
-  - As a user, you can type and send new messages in this conversation
+1 - Optimization of code
 
-**As your application can be used by millions of users, make sure to provide some robust safety guards.**
+- Don't keep unused library
+- Use Lazy loading component
+- Use SSR to generate HTML code server side
+  2 - Limit API call
+  3 - Use CDN and cache navigator
+  4 - Use external utils (Twicpics to optimize images for example)
 
-### Sketches :
+Our goal is to support everybody in the country, including people with disabilities. As a good citizen and a good developer, can you make sure the app is accessible for everyone ?
+not everywhere
 
-Obvisouly, it is up to you to make something nice and pretty, you are free to design it the way you like. The sketches are here to give you an idea on how it should look.
-
-<details>
-  <summary>Click to see the sketches</summary>
-  
-Mobile list :
-
-![](./sketches/list-mobile.jpg)
-
-Desktop list :
-
-![](./sketches/list-desktop.jpg)
-
-Mobile conversation :
-
-![](./sketches/conv-mobile.jpg)
-
-Desktop conversation :
-
-![](./sketches/conv-desktop.jpg)
-
-</details>
-
-### API :
-
-You can find the API swagger file in `docs/api-swagger.yaml`.
-
-For a better readibility, you can view it on [https://leboncoin.tech/frontend-technical-test/](https://leboncoin.tech/frontend-technical-test/).
-
----
-
-## Bonus 1 :
-
-We provide some conversation samples, but can you improve the app so the user can now create new conversations ?
-
-## Bonus 2 :
-
-Our infrastructure is a bit shaky.. Sometimes the servers are crashing. “It’s not you, it’s me”, but maybe you can display something nice to warn the user and handle it gracefully.
-
-## Do you want to make the app even better ?
-
-Feel free to make as many improvements as you like.
-We love creativity and technical challenges.
-
-If you are out of ideas, here are some thoughts :
-
-- As we want to reach our users anywhere, we need to make sure the app is performing well. What can you do to make it really fast ?
-
-- Our goal is to support everybody in the country, including people with disabilities. As a good citizen and a good developer, can you make sure the app is accessible for everyone ?
-
-- We all love to relax after a hard day’s work. It would be a shame if we didn’t feel confident enough about the upcoming automatic deployment. Are you sure everything has been tested thoroughly ?
+We all love to relax after a hard day’s work. It would be a shame if we didn’t feel confident enough about the upcoming automatic deployment. Are you sure everything has been tested thoroughly ?
+No because I don't write test. But I should have run end-to-end tests to check that my application is usable by a user and unit tests on the critical parts of my code, in particular the sending of new messages. 

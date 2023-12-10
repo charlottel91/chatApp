@@ -1,12 +1,20 @@
-import type { AppProps } from 'next/app'
-import { getLoggedUserId } from '../utils/getLoggedUserId'
-import '../styles/globals.css'
+import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import Layout from "src/components/Layout";
+import { AppProps } from "next/app";
+import "../styles/globals.css";
 
-// Default way to get a logged user
-export const loggedUserId = getLoggedUserId()
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Hydrate>
+    </QueryClientProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;

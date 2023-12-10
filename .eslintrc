@@ -1,3 +1,17 @@
 {
-  "extends": ["next", "next/core-web-vitals"]
+  "plugins": ["@typescript-eslint", "import"],
+  "extends": [
+    "plugin:@next/next/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "next/core-web-vitals",
+    "prettier",
+    "next"
+  ],
+  "rules": {
+    "react/destructuring-assignment": ["warn", "always"],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@next/next/no-img-element": "off" // until we removed twicpics scripts
+  }
 }
