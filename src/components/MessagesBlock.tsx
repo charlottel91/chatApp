@@ -18,7 +18,6 @@ export default function MessageBlock({
 }) {
   const queryClient = useQueryClient();
   const { data, isLoading } = useMessagesById(conversationId);
-  console.log(data);
 
   const { activeUser } = useActiveUserContext();
   const {
